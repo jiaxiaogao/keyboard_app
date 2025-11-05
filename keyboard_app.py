@@ -224,6 +224,7 @@ class KeyboardRecorderApp:
     def _playback_thread(self, replay_count):
         """回放线程"""
         try:
+            time.sleep(5)  # 等待5秒以便用户准备
             for i in range(replay_count):
                 if not self.is_playing:
                     break
@@ -232,12 +233,22 @@ class KeyboardRecorderApp:
                 # 更新回放状态
                 self.root.after(0, lambda iter=current_iteration: self._update_playback_status(iter, replay_count))
                 
+                # 清除记录的时间戳
+                t = 1.0
+                t1 = 0.1
+                for my_event in self.recorded_events:
+                    print(my_event)
+                    print(my_event.time)
+                    my_event.time = t  # 重置时间戳，避免时间间隔过大影响回放速度
+                    t += t1 #重置时间间隔为0.1秒
+                    print(my_event.time)
+                
+
                 # 回放记录
                 keyboard.play(self.recorded_events)
                 
-                # 如果不是最后一次回放，等待一下
-                if i < replay_count - 1 and self.is_playing:
-                    time.sleep(1)
+                # 等待0.3秒，间隔开多轮回放
+                time.sleep(0.3)
             
             self.root.after(0, self._on_playback_finished)
             

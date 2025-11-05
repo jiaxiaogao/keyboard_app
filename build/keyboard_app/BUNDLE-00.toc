@@ -1,0 +1,3 @@
+([('keyboard_app',
+   '/Users/jiaxiaogao/Desktop/keyboard_app/dist/keyboard_app',
+   'EXECUTABLE')],)

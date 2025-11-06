@@ -36,3 +36,9 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
+app = BUNDLE(
+    exe,
+    name='keyboard_app.app',
+    icon=None,
+    bundle_identifier=None,
+)

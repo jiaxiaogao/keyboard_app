@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 import os
 
+
 class KeyboardRecorderApp:
     def __init__(self, root):
         self.root = root
@@ -379,7 +380,7 @@ def main():
     except ImportError:
         print("请先安装keyboard库: pip install keyboard")
         return
-    
+
     root = tk.Tk()
     app = KeyboardRecorderApp(root)
     root.mainloop()

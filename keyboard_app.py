@@ -101,6 +101,9 @@ class KeyboardRecorderApp:
         
     def toggle_recording(self):
         """开始或停止记录"""
+        print("toggle_recording called")
+        print(self.is_recording)
+
         if not self.is_recording:
             self.start_recording()
         else:
@@ -108,6 +111,7 @@ class KeyboardRecorderApp:
     
     def start_recording(self):
         """开始记录键盘事件"""
+        print("start_recording called")
         if self.is_playing:
             messagebox.showwarning("警告", "请先停止回放")
             return
@@ -131,6 +135,7 @@ class KeyboardRecorderApp:
     
     def _record_thread(self):
         """记录线程"""
+        print("_record_thread called")
         try:
             # 开始记录，按ESC停止
             self.recorded_events = keyboard.record(until='esc')
@@ -141,6 +146,7 @@ class KeyboardRecorderApp:
     
     def _on_recording_finished(self):
         """记录完成回调"""
+        print("_on_recording_finished called")
         self.is_recording = False
         
         # 更新UI
@@ -167,6 +173,7 @@ class KeyboardRecorderApp:
     
     def _on_recording_error(self, error_msg):
         """记录错误回调"""
+        print("_on_recording_error called")
         self.is_recording = False
         
         # 更新UI
@@ -180,16 +187,41 @@ class KeyboardRecorderApp:
     
     def stop_recording(self):
         """停止记录"""
+        print("stop_recording called")
+        print(self.is_recording)
+
+
         if self.is_recording:
             # 模拟按下ESC键来停止记录
             try:
-                keyboard.press('esc')
+                # keyboard.send('esc') #send也不行，还是没反应
+                # print("sent esc")
+
+                # time.sleep(3) #延时一会，方便我切换到其他窗口来测试这个esc是否被按下（切换到win应用程序页面，能识别到esc）
+                keyboard.press('esc') #经测试，这里esc确实是被按下了，电脑系统也识别到了，但是就是_record_thread中的record函数没有结束
+                print("pressed esc")
+                time.sleep(0.3)
                 keyboard.release('esc')
+                print("released esc")
+
+                # time.sleep(3)
+                # keyboard.write("test")
+                # keyboard.press("ctrl")
+                # keyboard.press('esc') #ctrl+esc == windows键 ——这里电脑是识别到了，但是监听线程没有识别到
+
+
+                # time.sleep(2)
+                # keyboard.press('esc') #按一次不行？多按几次？ ——还是不行，就是监听的线程没有捕捉到
+                # print("pressed esc")
+                # time.sleep(0.3)
+                # keyboard.release('esc')
+                # print("released esc")
             except Exception as e:
                 print(f"停止记录时发生错误: {e}")
     
     def start_playback(self):
         """开始回放"""
+        print("start_playback called")
         if not self.recorded_events:
             messagebox.showwarning("警告", "没有可回放的记录")
             return
@@ -224,6 +256,7 @@ class KeyboardRecorderApp:
     
     def _playback_thread(self, replay_count):
         """回放线程"""
+        print("_playback_thread called")
         try:
             time.sleep(5)  # 等待5秒以便用户准备
             for i in range(replay_count):
@@ -259,11 +292,13 @@ class KeyboardRecorderApp:
     
     def _update_playback_status(self, current, total):
         """更新回放状态"""
+        print("_update_playback_status called")
         self.play_status.config(text=f"状态: 回放中 ({current}/{total})")
         self.status_label.config(text=f"回放第 {current}/{total} 次...")
     
     def _on_playback_finished(self):
         """回放完成回调"""
+        print("_on_playback_finished called")
         self.is_playing = False
         
         # 更新UI
@@ -277,6 +312,7 @@ class KeyboardRecorderApp:
     
     def _on_playback_error(self, error_msg):
         """回放错误回调"""
+        print("_on_playback_error called")
         self.is_playing = False
         
         # 更新UI
@@ -290,11 +326,13 @@ class KeyboardRecorderApp:
     
     def stop_playback(self):
         """停止回放"""
+        print("stop_playback called")
         self.is_playing = False
         self.status_label.config(text="回放已停止")
     
     def save_recording(self):
         """保存记录到文件"""
+        print("save_recording called")
         if not self.recorded_events:
             messagebox.showwarning("警告", "没有可保存的记录")
             return
@@ -323,6 +361,7 @@ class KeyboardRecorderApp:
     
     def load_recording(self):
         """从文件加载记录"""
+        print("load_recording called")
         try:
             filename = filedialog.askopenfilename(
                 title="选择记录文件",
@@ -359,6 +398,7 @@ class KeyboardRecorderApp:
     
     def clear_recording(self):
         """清空记录"""
+        print("clear_recording called")
         if self.recorded_events and not self.is_recording and not self.is_playing:
             self.recorded_events = []
             self.info_text.delete(1.0, tk.END)
@@ -369,15 +409,17 @@ class KeyboardRecorderApp:
     
     def update_info(self, message):
         """更新信息文本框"""
+        print("update_info called")
         self.info_text.insert(tk.END, message)
         self.info_text.see(tk.END)
         self.root.update_idletasks()
 
 def main():
-
+    print("main called")
     root = tk.Tk()
     app = KeyboardRecorderApp(root)
     root.mainloop()
+    print("end of main")
 
 if __name__ == "__main__":
     main()

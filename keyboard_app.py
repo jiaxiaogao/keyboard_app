@@ -374,12 +374,6 @@ class KeyboardRecorderApp:
         self.root.update_idletasks()
 
 def main():
-    try:
-        # 检查keyboard库是否可用
-        import keyboard
-    except ImportError:
-        print("请先安装keyboard库: pip install keyboard")
-        return
 
     root = tk.Tk()
     app = KeyboardRecorderApp(root)

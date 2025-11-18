@@ -3,306 +3,264 @@
     "name": "left",
     "event_type": "down",
     "scan_code": 75,
-    "time": 1762346059.3538532
+    "time": 1763471257.082887
   },
   {
     "name": "left",
     "event_type": "up",
     "scan_code": 75,
-    "time": 1762346059.4397998
+    "time": 1763471257.160851
   },
   {
     "name": "down",
     "event_type": "down",
     "scan_code": 80,
-    "time": 1762346059.709729
+    "time": 1763471257.4148242
   },
   {
     "name": "down",
     "event_type": "up",
     "scan_code": 80,
-    "time": 1762346059.7867672
+    "time": 1763471257.479758
   },
   {
     "name": "ctrl",
     "event_type": "down",
     "scan_code": 29,
-    "time": 1762346060.2407403
+    "time": 1763471258.9860134
   },
   {
     "name": "c",
     "event_type": "down",
     "scan_code": 46,
-    "time": 1762346060.6034582
+    "time": 1763471259.360866
   },
   {
     "name": "c",
     "event_type": "up",
     "scan_code": 46,
-    "time": 1762346060.7037911
+    "time": 1763471259.4601247
   },
   {
     "name": "ctrl",
     "event_type": "up",
     "scan_code": 29,
-    "time": 1762346060.7227695
+    "time": 1763471259.5283148
   },
   {
     "name": "alt",
     "event_type": "down",
     "scan_code": 56,
-    "time": 1762346061.753658
+    "time": 1763471259.9953105
   },
   {
     "name": "tab",
     "event_type": "down",
     "scan_code": 15,
-    "time": 1762346061.9227316
+    "time": 1763471260.3159785
   },
   {
     "name": "tab",
     "event_type": "up",
     "scan_code": 15,
-    "time": 1762346062.0437872
+    "time": 1763471260.3969085
   },
   {
     "name": "alt",
     "event_type": "up",
     "scan_code": 56,
-    "time": 1762346062.9497976
+    "time": 1763471261.0843246
   },
   {
     "name": "ctrl",
     "event_type": "down",
     "scan_code": 29,
-    "time": 1762346068.1197476
+    "time": 1763471261.7544458
   },
   {
     "name": "v",
     "event_type": "down",
     "scan_code": 47,
-    "time": 1762346068.5497322
+    "time": 1763471262.1469715
   },
   {
     "name": "v",
     "event_type": "up",
     "scan_code": 47,
-    "time": 1762346068.630889
+    "time": 1763471262.2150385
   },
   {
     "name": "ctrl",
     "event_type": "up",
     "scan_code": 29,
-    "time": 1762346068.6872015
+    "time": 1763471262.238783
   },
   {
     "name": "right",
     "event_type": "down",
     "scan_code": 77,
-    "time": 1762346069.4127445
+    "time": 1763471269.663307
   },
   {
     "name": "right",
     "event_type": "up",
     "scan_code": 77,
-    "time": 1762346069.4825234
+    "time": 1763471269.740199
   },
   {
     "name": "alt",
     "event_type": "down",
     "scan_code": 56,
-    "time": 1762346069.9215908
+    "time": 1763471271.4115648
   },
   {
     "name": "tab",
     "event_type": "down",
     "scan_code": 15,
-    "time": 1762346070.1023154
-  },
-  {
-    "name": "tab",
-    "event_type": "up",
-    "scan_code": 15,
-    "time": 1762346070.2164521
+    "time": 1763471271.4934325
   },
   {
     "name": "alt",
     "event_type": "up",
     "scan_code": 56,
-    "time": 1762346070.8537805
+    "time": 1763471271.5450854
+  },
+  {
+    "name": "tab",
+    "event_type": "up",
+    "scan_code": 15,
+    "time": 1763471271.5959067
   },
   {
     "name": "right",
     "event_type": "down",
     "scan_code": 77,
-    "time": 1762346073.3477452
+    "time": 1763471272.952009
   },
   {
     "name": "right",
     "event_type": "up",
     "scan_code": 77,
-    "time": 1762346073.4297807
+    "time": 1763471273.0339339
   },
   {
     "name": "ctrl",
     "event_type": "down",
     "scan_code": 29,
-    "time": 1762346073.5857327
+    "time": 1763471273.664251
   },
   {
     "name": "c",
     "event_type": "down",
     "scan_code": 46,
-    "time": 1762346073.8707404
+    "time": 1763471274.0512464
   },
   {
     "name": "c",
     "event_type": "up",
     "scan_code": 46,
-    "time": 1762346073.9701846
+    "time": 1763471274.1358647
   },
   {
     "name": "ctrl",
     "event_type": "up",
     "scan_code": 29,
-    "time": 1762346073.9937477
+    "time": 1763471274.170132
   },
   {
     "name": "alt",
     "event_type": "down",
     "scan_code": 56,
-    "time": 1762346074.9897385
+    "time": 1763471274.6633487
   },
   {
     "name": "tab",
     "event_type": "down",
     "scan_code": 15,
-    "time": 1762346075.070739
+    "time": 1763471274.7450957
   },
   {
     "name": "alt",
     "event_type": "up",
     "scan_code": 56,
-    "time": 1762346075.1361353
+    "time": 1763471274.7936163
   },
   {
     "name": "tab",
     "event_type": "up",
     "scan_code": 15,
-    "time": 1762346075.1762211
+    "time": 1763471274.8317966
   },
   {
     "name": "ctrl",
     "event_type": "down",
     "scan_code": 29,
-    "time": 1762346075.7007556
-  },
-  {
-    "name": "ctrl",
-    "event_type": "down",
-    "scan_code": 29,
-    "time": 1762346076.2076807
-  },
-  {
-    "name": "ctrl",
-    "event_type": "down",
-    "scan_code": 29,
-    "time": 1762346076.2412293
-  },
-  {
-    "name": "ctrl",
-    "event_type": "down",
-    "scan_code": 29,
-    "time": 1762346076.2727115
-  },
-  {
-    "name": "ctrl",
-    "event_type": "down",
-    "scan_code": 29,
-    "time": 1762346076.3040123
-  },
-  {
-    "name": "ctrl",
-    "event_type": "down",
-    "scan_code": 29,
-    "time": 1762346076.3352358
-  },
-  {
-    "name": "ctrl",
-    "event_type": "down",
-    "scan_code": 29,
-    "time": 1762346076.3661697
+    "time": 1763471275.3423586
   },
   {
     "name": "v",
     "event_type": "down",
     "scan_code": 47,
-    "time": 1762346076.4037209
+    "time": 1763471275.841317
   },
   {
     "name": "v",
     "event_type": "up",
     "scan_code": 47,
-    "time": 1762346076.4724212
+    "time": 1763471275.9103181
   },
   {
     "name": "ctrl",
     "event_type": "up",
     "scan_code": 29,
-    "time": 1762346076.5220592
+    "time": 1763471275.9301696
   },
   {
     "name": "left",
     "event_type": "down",
     "scan_code": 75,
-    "time": 1762346076.902792
+    "time": 1763471279.186463
   },
   {
     "name": "left",
     "event_type": "up",
     "scan_code": 75,
-    "time": 1762346076.975777
+    "time": 1763471279.267025
   },
   {
     "name": "down",
     "event_type": "down",
     "scan_code": 80,
-    "time": 1762346077.289786
+    "time": 1763471279.5494685
   },
   {
     "name": "down",
     "event_type": "up",
     "scan_code": 80,
-    "time": 1762346077.3567016
+    "time": 1763471279.618027
   },
   {
     "name": "alt",
     "event_type": "down",
     "scan_code": 56,
-    "time": 1762346077.8228087
+    "time": 1763471280.076178
   },
   {
     "name": "tab",
     "event_type": "down",
     "scan_code": 15,
-    "time": 1762346077.900739
+    "time": 1763471280.1568732
   },
   {
     "name": "alt",
     "event_type": "up",
     "scan_code": 56,
-    "time": 1762346077.9561136
+    "time": 1763471280.2111278
   },
   {
     "name": "tab",
     "event_type": "up",
     "scan_code": 15,
-    "time": 1762346077.9904022
-  },
-  {
-    "name": "esc",
-    "event_type": "down",
-    "scan_code": 1,
-    "time": 1762346081.1895068
+    "time": 1763471280.255969
   }
 ]

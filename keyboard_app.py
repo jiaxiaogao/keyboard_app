@@ -43,7 +43,7 @@ class KeyboardRecorderApp:
                                        command=self.toggle_recording)
         self.record_button.grid(row=0, column=0, padx=(0, 10))
         
-        self.stop_record_button = ttk.Button(record_frame, text="停止记录", 
+        self.stop_record_button = ttk.Button(record_frame, text="按ESC停止记录", 
                                            command=self.stop_recording, state="disabled")
         self.stop_record_button.grid(row=0, column=1, padx=(0, 10))
         
@@ -273,6 +273,10 @@ class KeyboardRecorderApp:
                 for my_event in self.recorded_events:
                     print(my_event)
                     print(my_event.time)
+                    # print(my_event.scan_code)
+                    # print(my_event.name)
+                    # print(my_event.scan_code or my_event.name) 
+                    # # or返回第一个非零参数，但是好像没有scan_code是0的情况啊？没搞懂
                     my_event.time = t  # 重置时间戳，避免时间间隔过大影响回放速度
                     t += t1 #重置时间间隔为0.1秒
                     print(my_event.time)
@@ -336,7 +340,10 @@ class KeyboardRecorderApp:
         if not self.recorded_events:
             messagebox.showwarning("警告", "没有可保存的记录")
             return
-            
+        print("recorded_events:(before saving)")
+        print("--------------------")
+        print(self.recorded_events)
+        print("--------------------")
         try:
             # 转换为可序列化的格式
             events_data = []
@@ -377,16 +384,28 @@ class KeyboardRecorderApp:
             # 转换回keyboard事件对象
             self.recorded_events = []
             for event_data in events_data:
-                # 创建类似keyboard事件的对象
-                class SimpleEvent:
-                    pass
-                event = SimpleEvent()
-                event.name = event_data['name']
-                event.event_type = event_data['event_type']
-                event.scan_code = event_data['scan_code']
-                event.time = event_data['time']
+                # # 创建类似keyboard事件的对象
+                # class SimpleEvent:
+                #     pass
+                # event = SimpleEvent()
+                # event.name = event_data['name']
+                # event.event_type = event_data['event_type']
+                # event.scan_code = event_data['scan_code']
+                # event.time = event_data['time']
+
+                # 直接创建keyboard.KeyboardEvent对象就行了，不用自己造个类SimpleEvent
+                event = keyboard.KeyboardEvent(name = event_data['name'],
+                                               event_type = event_data['event_type'],
+                                               scan_code = event_data['scan_code'],
+                                               time = event_data['time'])
                 self.recorded_events.append(event)
             
+            print("recorded_events:(after loading)")
+            print("--------------------")
+            print(self.recorded_events)
+            print("--------------------")
+
+
             self.status_label.config(text=f"已加载记录: {os.path.basename(filename)}")
             self.update_info(f"已从文件加载记录: {filename}\n")
             self.update_info(f"加载了 {len(self.recorded_events)} 个按键事件\n")

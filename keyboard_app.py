@@ -23,6 +23,8 @@ class KeyboardRecorderApp:
         self.play_thread = None
         
         self.setup_ui()
+
+        self.setup_shortcuts()
         
     def setup_ui(self):
         """设置用户界面"""
@@ -57,20 +59,29 @@ class KeyboardRecorderApp:
         ttk.Label(play_frame, text="回放次数:").grid(row=0, column=0, padx=(0, 5))
         
         self.replay_count = tk.StringVar(value="1")
-        replay_spinbox = ttk.Spinbox(play_frame, from_=1, to=100, width=5,
+        replay_count_spinbox = ttk.Spinbox(play_frame, from_=1, to=100, width=3,
                                     textvariable=self.replay_count)
-        replay_spinbox.grid(row=0, column=1, padx=(0, 20))
+        replay_count_spinbox.grid(row=0, column=1, padx=(0, 10))
+
+        ttk.Label(play_frame, text="回放速度:").grid(row=0, column=2, padx=(0, 5))
+        
+        self.replay_speed = tk.StringVar(value="1")
+        replay_speed_spinbox = ttk.Spinbox(play_frame, from_=1, to=100, width=3,
+                                    textvariable=self.replay_speed)
+        replay_speed_spinbox.grid(row=0, column=3, padx=(0, 10))
+
+        # ttk.Label(play_frame, text="档").grid(row=0, column=4, padx=(0, 5))
         
         self.play_button = ttk.Button(play_frame, text="开始回放", 
                                      command=self.start_playback)
-        self.play_button.grid(row=0, column=2, padx=(0, 10))
+        self.play_button.grid(row=0, column=5, padx=(0, 10))
         
         self.stop_play_button = ttk.Button(play_frame, text="停止回放", 
                                           command=self.stop_playback, state="disabled")
-        self.stop_play_button.grid(row=0, column=3, padx=(0, 10))
+        self.stop_play_button.grid(row=0, column=6, padx=(0, 10))
         
         self.play_status = ttk.Label(play_frame, text="状态: 未回放", foreground="red")
-        self.play_status.grid(row=0, column=4, padx=(20, 0))
+        self.play_status.grid(row=0, column=7, padx=(20, 0))
         
         # 记录信息显示
         info_frame = ttk.LabelFrame(main_frame, text="记录信息", padding="10")
@@ -98,7 +109,18 @@ class KeyboardRecorderApp:
         main_frame.columnconfigure(0, weight=1)
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
-        
+    
+    def setup_shortcuts(self):
+        """设置快捷键"""
+        print("setup_shortcuts called")
+        # 使用keyboard库监听全局快捷键
+        # keyboard.add_hotkey('ctrl+shift+r', self.toggle_recording)
+        keyboard.add_hotkey('f9', self.start_playback)
+        keyboard.add_hotkey('f10', self.stop_playback)
+        # keyboard.add_hotkey('ctrl+shift+l', self.load_recording)
+        # keyboard.add_hotkey('ctrl+shift+w', self.save_recording)
+        # keyboard.add_hotkey('ctrl+shift+c', self.clear_recording)
+
     def toggle_recording(self):
         """开始或停止记录"""
         print("toggle_recording called")
@@ -232,10 +254,13 @@ class KeyboardRecorderApp:
             
         try:
             replay_count = int(self.replay_count.get())
+            replay_speed = int(self.replay_speed.get())
             if replay_count <= 0:
                 raise ValueError("回放次数必须大于0")
+            if replay_speed <= 0 or replay_speed > 3:
+                raise ValueError("回放速度只有1、2、3")
         except ValueError as e:
-            messagebox.showerror("错误", f"请输入有效的回放次数: {e}")
+            messagebox.showerror("错误", f"{e}")
             return
         
         self.is_playing = True
@@ -250,17 +275,21 @@ class KeyboardRecorderApp:
         self.status_label.config(text=f"开始回放，共 {replay_count} 次...")
         
         # 在后台线程中回放
-        self.play_thread = threading.Thread(target=self._playback_thread, args=(replay_count,))
+        self.play_thread = threading.Thread(target=self._playback_thread, args=(replay_count, replay_speed,))
         self.play_thread.daemon = True
         self.play_thread.start()
     
-    def _playback_thread(self, replay_count):
+    def _playback_thread(self, replay_count, replay_speed):
         """回放线程"""
         print("_playback_thread called")
         try:
             time.sleep(5)  # 等待5秒以便用户准备
+
+            #每次回放前会检测一下is_playing状态，如果被设为False就停止回放，所以停止回放也是要等当前这一轮回放结束才真正停止
+            user_stop_playback_flag = 0
             for i in range(replay_count):
                 if not self.is_playing:
+                    user_stop_playback_flag = 1 #表示是被用户停止的
                     break
                     
                 current_iteration = i + 1
@@ -269,7 +298,7 @@ class KeyboardRecorderApp:
                 
                 # 清除记录的时间戳
                 t = 1.0
-                t1 = 0.1
+                t1 = 0.1 * (4 - replay_speed)  #根据回放速度调整时间间隔，速度档位越大，间隔越小，越快
                 for my_event in self.recorded_events:
                     print(my_event)
                     print(my_event.time)
@@ -278,17 +307,19 @@ class KeyboardRecorderApp:
                     # print(my_event.scan_code or my_event.name) 
                     # # or返回第一个非零参数，但是好像没有scan_code是0的情况啊？没搞懂
                     my_event.time = t  # 重置时间戳，避免时间间隔过大影响回放速度
-                    t += t1 #重置时间间隔为0.1秒
+                    t += t1 #重置时间间隔为t1秒
                     print(my_event.time)
                 
 
                 # 回放记录
+                #第二个参数0表示以系统允许的最快速度回放，输入文本还行，录成绩就不行了，切换窗口反应不过来
+                # keyboard.play(self.recorded_events, 0) 
                 keyboard.play(self.recorded_events)
                 
                 # 等待0.3秒，间隔开多轮回放
                 time.sleep(0.3)
             
-            self.root.after(0, self._on_playback_finished)
+            self.root.after(0, self._on_playback_finished(user_stop_playback_flag))
             
         except Exception as e:
             error_msg = str(e)
@@ -300,7 +331,7 @@ class KeyboardRecorderApp:
         self.play_status.config(text=f"状态: 回放中 ({current}/{total})")
         self.status_label.config(text=f"回放第 {current}/{total} 次...")
     
-    def _on_playback_finished(self):
+    def _on_playback_finished(self, user_stop_playback_flag=0):
         """回放完成回调"""
         print("_on_playback_finished called")
         self.is_playing = False
@@ -311,8 +342,13 @@ class KeyboardRecorderApp:
         self.record_button.config(state="normal")
         self.play_status.config(text="状态: 回放完成", foreground="blue")
         self.status_label.config(text="回放完成！")
-        
-        self.update_info("回放完成！\n")
+
+        if user_stop_playback_flag == 1:
+            self.play_status.config(text="状态: 回放停止", foreground="red")
+            self.status_label.config(text="回放已停止！")
+            self.update_info("回放被用户停止！\n")
+        else:
+            self.update_info("回放完成！\n")
     
     def _on_playback_error(self, error_msg):
         """回放错误回调"""

@@ -25,6 +25,8 @@ class KeyboardRecorderApp:
         self.setup_ui()
 
         self.setup_shortcuts()
+
+        self.setup_welcome_message()
         
     def setup_ui(self):
         """设置用户界面"""
@@ -87,7 +89,7 @@ class KeyboardRecorderApp:
         info_frame = ttk.LabelFrame(main_frame, text="记录信息", padding="10")
         info_frame.grid(row=3, column=0, columnspan=3, sticky=(tk.W, tk.E), pady=(0, 10))
         
-        self.info_text = scrolledtext.ScrolledText(info_frame, height=8, width=70)
+        self.info_text = scrolledtext.ScrolledText(info_frame, height=8, width=78)
         self.info_text.grid(row=0, column=0, sticky=(tk.W, tk.E))
         
         # 文件操作区域
@@ -121,6 +123,27 @@ class KeyboardRecorderApp:
         # keyboard.add_hotkey('ctrl+shift+w', self.save_recording)
         # keyboard.add_hotkey('ctrl+shift+c', self.clear_recording)
 
+    def setup_welcome_message(self):
+        """显示欢迎信息"""
+        print("setup_welcome_message called")
+        welcome_message = (
+            "------------------------------\n"
+            "欢迎使用键盘记录回放工具！\n"
+            "本工具可以记录您的键盘输入，并能将记录的内容进行回放，支持多次回放和不同速度设置。适用于需要重复性操作的场景。\n"
+            "------------------------------\n"
+            "使用说明:\n"
+            "1. 点击“开始记录”按钮开始记录键盘输入，按ESC键停止记录。\n"
+            "2. 设置回放次数和速度，点击“开始回放”按钮进行回放。\n"
+            "3. 可以保存记录到文件，或从文件加载记录。\n"
+            "4. 使用“清空记录”按钮清除当前记录。\n"
+            "\n"
+            "快捷键说明:\n"
+            "  F9 - 开始回放\n"
+            "  F10 - 停止回放\n"
+            "------------------------------\n"
+        )
+        self.update_info(welcome_message)
+
     def toggle_recording(self):
         """开始或停止记录"""
         print("toggle_recording called")
@@ -153,7 +176,7 @@ class KeyboardRecorderApp:
         self.record_thread.daemon = True
         self.record_thread.start()
         
-        self.update_info("开始记录键盘输入...\n")
+        self.update_info("\n开始记录键盘输入...")
     
     def _record_thread(self):
         """记录线程"""
@@ -170,6 +193,9 @@ class KeyboardRecorderApp:
         """记录完成回调"""
         print("_on_recording_finished called")
         self.is_recording = False
+
+        # 删除最后一个ESC事件
+        self.recorded_events.pop()
         
         # 更新UI
         self.record_button.config(state="normal")
@@ -179,8 +205,8 @@ class KeyboardRecorderApp:
         self.status_label.config(text=f"记录完成！共记录 {len(self.recorded_events)} 个按键事件")
         
         # 显示记录信息
-        self.update_info(f"记录完成！\n")
-        self.update_info(f"总按键事件数: {len(self.recorded_events)}\n")
+        self.update_info(f"\n记录完成！")
+        self.update_info(f"\n总按键事件数: {len(self.recorded_events)}")
         
         # 分析记录内容
         key_counts = {}
@@ -189,9 +215,9 @@ class KeyboardRecorderApp:
                 key_name = event.name
                 key_counts[key_name] = key_counts.get(key_name, 0) + 1
         
-        self.update_info("按键统计:\n")
+        self.update_info("\n按键统计:")
         for key, count in key_counts.items():
-            self.update_info(f"  {key}: {count}次\n")
+            self.update_info(f"\n  {key}: {count}次")
     
     def _on_recording_error(self, error_msg):
         """记录错误回调"""
@@ -282,6 +308,9 @@ class KeyboardRecorderApp:
     def _playback_thread(self, replay_count, replay_speed):
         """回放线程"""
         print("_playback_thread called")
+
+        self.update_info("\n-----回放即将开始，正式回放前会等待5秒钟，方便您准备回放的环境-----\n")
+
         try:
             time.sleep(5)  # 等待5秒以便用户准备
 
@@ -346,9 +375,9 @@ class KeyboardRecorderApp:
         if user_stop_playback_flag == 1:
             self.play_status.config(text="状态: 回放停止", foreground="red")
             self.status_label.config(text="回放已停止！")
-            self.update_info("回放被用户停止！\n")
+            self.update_info("\n回放被用户停止！")
         else:
-            self.update_info("回放完成！\n")
+            self.update_info("\n回放完成！")
     
     def _on_playback_error(self, error_msg):
         """回放错误回调"""
@@ -443,8 +472,8 @@ class KeyboardRecorderApp:
 
 
             self.status_label.config(text=f"已加载记录: {os.path.basename(filename)}")
-            self.update_info(f"已从文件加载记录: {filename}\n")
-            self.update_info(f"加载了 {len(self.recorded_events)} 个按键事件\n")
+            self.update_info(f"\n已从文件加载记录: {filename}")
+            self.update_info(f"\n加载了 {len(self.recorded_events)} 个按键事件")
             
             messagebox.showinfo("成功", f"记录加载成功！\n共加载 {len(self.recorded_events)} 个按键事件")
             
